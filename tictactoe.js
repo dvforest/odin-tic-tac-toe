@@ -110,12 +110,9 @@ function TicTacToe( playerOneName = "Player One", playerTwoName = "Player Two") 
     // Print initial empty board
     printNewRound();
 
-    return { getActivePlayer, playRound};
+    return { 
+        getActivePlayer,
+        playRound,
+        getBoard: board.getBoard
+    };
 };
-
-const game = TicTacToe("Jeff", "Stacie");
-game.playRound(3);
-game.playRound(7);
-game.playRound(0);
-game.playRound(2);
-game.playRound(6);
