@@ -1,3 +1,9 @@
+:root {
+    --green-color: #86959a;
+    --sand-color: #fbfaee;
+    --shadow-color: #e1e1d9;
+}
+
 * {
     box-sizing: border-box;
 }
@@ -6,19 +12,32 @@ body {
     background-color: rgb(242, 242, 242);
 }
 
-.game-container {
-    width: 400px;
-    margin: 100px auto;
-    padding: 30px;
-    border-radius: 20px;
-    box-shadow: 0 5px 30px 0 rgb(0 0 0 / 20%);
-    background-color: white;
+.round-container {
+    width: 650px;
+    aspect-ratio: 1 /1;
+    padding: 70px;
+    margin: 30px auto;
+    border-radius: 100%;
+    background-color: var(--sand-color);
+    border: 40px solid var(--green-color);
+    box-shadow: inset 0px 20px 0 var(--shadow-color);
+}
+
+.square-container {
+    width: 300px;
+    margin: auto;
+    padding: 40px;
+    border-radius: 40px;
+    background-color: rgb(134,149,154);
 }
 
 .game-message {
     font-size: 1.5rem;
     text-align: center;
-    padding-bottom: 1rem;
+    color: var(--green-color);
+    padding-bottom: 3rem;
+    font-family: "Fredoka", serif;
+    font-weight: 400;
 }
 
 .game-message span {
@@ -28,30 +47,28 @@ body {
 .game-board {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
+    background-color: var(--sand-color);
     gap: 10px;
+    padding: 10px;
+    border-radius: 10px;
 }
 
 .cell {
     aspect-ratio: 1 / 1;
-    border-radius: 10px;
-    font-size: 2.5rem;
+    border-radius: 2px;
+    font-family: "Fredoka", serif;
+    font-weight: 600;
+    font-size: 3rem;
+    color: var(--sand-color);
     border: none;
-    background-color: rgb(248, 248, 248);
-    box-shadow: inset 5px 5px 20px rgb(0 0 0 / 6%);
-}
-
-.red-x {
-    color: rgb(237, 81, 81);
-}
-
-.blue-o {
-    color: rgb(84, 176, 207);
+    background-color: var(--green-color);
+    text-shadow: rgb(0 0 0 / 10%) 3px 3px 3px;
 }
 
 .cell.hover-active:hover {
-    box-shadow: inset 5px 5px 20px rgb(0 0 0 / 2%);
+    box-shadow: inset 100px 100px rgb(255 255 255 / 5%);
 }
 
 .cell.hover-active:active {
-    box-shadow: inset 5px 5px 20px rgb(0 0 0 / 10%);
+    box-shadow: inset 3px 3px 3px rgb(0 0 0 / 10%);
 }
