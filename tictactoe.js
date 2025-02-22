@@ -100,7 +100,6 @@ function TicTacToe( playerOneName = "Player One", playerTwoName = "Player Two") 
     const playRound = (cell) => {
         board.addMark(cell, getActivePlayer().mark);
         if (checkWinner()){
-            printWinner();
             return;
         }
         switchActivePlayer();
@@ -113,6 +112,7 @@ function TicTacToe( playerOneName = "Player One", playerTwoName = "Player Two") 
     return { 
         getActivePlayer,
         playRound,
-        getBoard: board.getBoard
+        getBoard: board.getBoard,
+        checkWinner
     };
 };
