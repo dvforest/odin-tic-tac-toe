@@ -72,3 +72,75 @@ body {
 .cell.hover-active:active {
     box-shadow: inset 3px 3px 3px rgb(0 0 0 / 10%);
 }
+
+.player-mark {
+    margin-left: 10px;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    border-radius: 5px;
+    font-family: "Fredoka", serif;
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--sand-color);
+    background-color: var(--shadow-color);
+}
+
+.game-logo {
+    font-family: "Fredoka", serif;
+    font-weight: 600;
+    font-size: 3.5rem;
+    text-align: center;
+    color: var(--green-color)
+}
+
+.logo-subtitle {
+    font-family: "Fredoka", serif;
+    font-weight: 100;
+    font-size: 1.2rem;
+    text-align: center;
+    color: var(--green-color);
+    margin-bottom: 30px; 
+}
+
+.player-name {
+    border: 2px solid var(--shadow-color);
+    font-size: 1rem;
+    text-align: center;
+    padding: 5px;
+    width: 325px;
+}
+
+.player-name:active {
+    border: 2px solid var(--green-color);
+}
+
+.versus {
+    font-family: "Fredoka", serif;
+    font-weight: 100;
+    font-size: 1rem;
+    text-align: center;
+    color: var(--green-color);
+}
+
+.welcome-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    height: 100%;
+}
+
+.ready-button {
+    background-color: rgba(0 0 0 / 0%);
+    font-family: "Fredoka", serif;
+    font-weight: 400;
+    font-size: 1rem;
+    color: var(--sand-color);
+    background-color: var(--green-color);
+    padding: 10px 30px;
+    border: none;
+    border-radius: 5px;
+    margin-top: 40px;
+}

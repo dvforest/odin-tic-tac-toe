@@ -1,42 +1,62 @@
 gameContainer = document.querySelector(".round-container");
 
-const PlayerSelectScreen = () => {
-    let state = "incomplete";
-    let player1 = "Player One";
-    let player2 = "Player Two"
-
-    const setComplete = () => {
-        state = "complete";
-    }
-
-    const isComplete = () => state === "complete";
-
-    const getPlayerNames = () => [player1, player2];
+const WelcomeScreen = (function()   {
+    let playerNames = ["Player One", "Player Two"]
+    
+    const init = () => {
+        // Create HTML elements
+        gameContainer.innerHTML = `
+            <div class="welcome-container">
+                <div class="game-logo">TIC-TAC-TOE</div>
+                <div class="logo-subtitle">WEB EDITION</div>
+                <input id="player-name-1" class="player-name" type="text" placeholder="${playerNames[0]}"></input>
+                <div class="versus">VS</div>
+                <input id="player-name-2" class="player-name" type="text" placeholder="${playerNames[1]}"></input>
+                <button class="ready-button">START GAME</button>
+            </div>
+        `;
+        // Create event listener
+        const readyButton = document.querySelector(".ready-button");
+        readyButton.addEventListener("click", clickHandlerReady);
+        }
 
     const clickHandlerReady = (e) => {
-        player1 = document.getElementById("player-name-1").value;
-        player2 = document.getElementById("player-name-2").value;
-        setComplete();
+        // Update player names with inputs
+        const input1 = document.getElementById("player-name-1").value;
+        const input2 = document.getElementById("player-name-2").value;
+        if (input1){
+            playerNames[0] = input1;
+        }
+        if (input2){
+            playerNames[1] = input2;
+        }
+        GameScreen.init(playerNames);
     }
 
-    // Create elements and events
-    gameContainer.innerHTML = `
-        <div class="game-logo">Tic-Tac-Toe</div>
-        <div class="game-message">Who's playing?</div>
-        <input id="player-name-1" class="player-name" type="text" placeholder="${player1}"></input>
-        <input id="player-name-2" class="player-name" type="text" placeholder="${player2}"></input>
-        <button class="ready-btn">Ready!</button>
-    `;
+    return { init };
+})();
 
-    const readyButton = document.querySelector(".ready-btn");
-    readyButton.addEventListener("click", clickHandlerReady);
+const GameScreen = (function() {
+    let game;
 
-    return { isComplete, getPlayerNames };
-};
+    const init = (playerNames) => {
+        game = TicTacToe(playerNames);
 
-const GameScreen = (playerNames) => {
+        // Create HTML elements
+        gameContainer.innerHTML = `
+        <div class="game-message"></div>
+        <div class="square-container">
+        <div class="game-board"></div>
+        </div>
+        `;
+        
+        // Add events
+        const boardGrid = document.querySelector(".game-board");
+        boardGrid.addEventListener("click", clickHandlerBoard);
+        boardGrid.addEventListener("mouseover", mouseoverHandlerBoard);
 
-    const game = TicTacToe(playerNames[0], playerNames[1]);
+        update();
+    };
 
     const update = () => {
 
@@ -47,7 +67,7 @@ const GameScreen = (playerNames) => {
         // Clear the grid
         boardGrid.innerHTML = "";
         
-        // Get latest board and active player
+        // Get current board and active player
         const board = game.getBoard();
         const activePlayer = game.getActivePlayer();
 
@@ -68,18 +88,18 @@ const GameScreen = (playerNames) => {
         });
     }
 
-    // Handler to check which cell was clicked
+    // Handler checking which cell was clicked
     const clickHandlerBoard = (e) => {
         const cell = e.target;
         const id = cell.id;
 
-        // Make sure a cell was clicked (no gap), then play a round
+        // Make sure a cell was clicked, then play round
         if (!id || cell.textContent !== "") {
             return
         }
         game.playRound(id);
 
-        // Check for a winner
+        // Check is there is a winner
         if (game.checkWinner()){
             const winner = game.getActivePlayer().name;
             const message = document.querySelector(".game-message");
@@ -92,36 +112,12 @@ const GameScreen = (playerNames) => {
         }
     };
     
-    // Handler to preview which mark is going to be placed
+    // Handler previewing the mark about to be placed
     const mouseoverHandlerBoard = (e) => {
         const activePlayer = game.getActivePlayer().mark;
     }
-    
-    // Create elements
-    gameContainer.innerHTML = `
-    <div class="game-message"></div>
-    <div class="square-container">
-    <div class="game-board"></div>
-    </div>
-    `;
-    
-    // Add events
-    const boardGrid = document.querySelector(".game-board");
-    boardGrid.addEventListener("click", clickHandlerBoard);
-    boardGrid.addEventListener("mouseover", mouseoverHandlerBoard);
 
-    // Update once to initialize emptry grid
-    update();
-}
+    return { init };
+})();
 
-const mainLoop = () => {
-    const playerSelectScreen = PlayerSelectScreen();
-
-    const intervalId = setInterval(() => {
-        if (playerSelectScreen.isComplete()) {
-            clearInterval(intervalId);
-            const gameScreen = GameScreen(playerSelectScreen.getPlayerNames());
-        }
-    }, 100);
-};
-mainLoop();
+WelcomeScreen.init();

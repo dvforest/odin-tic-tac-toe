@@ -35,16 +35,16 @@ function Cell() {
     return { setValue, getValue };
 }
 
-function TicTacToe( playerOneName = "Player One", playerTwoName = "Player Two") {
+function TicTacToe(playerNames) {
     const board = GameBoard();
 
     const players = [
         {
-            name: playerOneName,
+            name: playerNames[0],
             mark: "O"
         },
         {
-            name: playerTwoName,
+            name: playerNames[1],
             mark: "X"
         }
 
