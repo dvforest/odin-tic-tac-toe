@@ -51,6 +51,7 @@ function TicTacToe(playerNames) {
     ];
 
     let activePlayer = players[0];
+    let winningCells = [];
 
     const getActivePlayer = () => activePlayer;
 
@@ -61,11 +62,6 @@ function TicTacToe(playerNames) {
     const printNewRound = () => {
         board.printBoard();
         console.log(`Active player is ${getActivePlayer().name}`);
-    }
-
-    const printWinner = () => {
-        board.printBoard();
-        console.log(`Winning player is ${getActivePlayer().name}`);
     }
 
     const checkWinner = () => {
@@ -91,11 +87,16 @@ function TicTacToe(playerNames) {
 
             // Check that cells are not empty and have the same mark
             if (marks[a] && marks[a] === marks[b] && marks[b] === marks[c]) {
+                winningCells = row;
                 return true;
             }
         }
         return false;
     }
+
+    const getWinningCells = () => winningCells;
+
+    const getPlayers = () => players;
 
     const playRound = (cell) => {
         board.addMark(cell, getActivePlayer().mark);
@@ -113,6 +114,8 @@ function TicTacToe(playerNames) {
         getActivePlayer,
         playRound,
         getBoard: board.getBoard,
-        checkWinner
+        checkWinner,
+        getWinningCells,
+        getPlayers
     };
 };
