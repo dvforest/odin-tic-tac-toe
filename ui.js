@@ -12,15 +12,15 @@ const WelcomeScreen = (function()   {
                 <input id="player-name-1" class="player-name" type="text" placeholder="${playerNames[0]}"></input>
                 <div class="versus">VS</div>
                 <input id="player-name-2" class="player-name" type="text" placeholder="${playerNames[1]}"></input>
-                <button class="ready-button">START GAME</button>
+                <button class="start-game-button">START GAME</button>
             </div>
         `;
         // Create event listener
-        const readyButton = document.querySelector(".ready-button");
-        readyButton.addEventListener("click", clickHandlerReady);
+        const startButton = document.querySelector(".start-game-button");
+        startButton.addEventListener("click", startGame);
         }
 
-    const clickHandlerReady = (e) => {
+    const startGame = (e) => {
         // Update player names with inputs
         const input1 = document.getElementById("player-name-1").value;
         const input2 = document.getElementById("player-name-2").value;
