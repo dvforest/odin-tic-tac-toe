@@ -75,6 +75,7 @@ const GameScreen = (function() {
         board.forEach((cell, index) => {
             const cellButton = document.createElement("button");
             cellButton.textContent = cell.getValue();
+
             // Only allow empty cells to have active hover style
             if (!cellButton.textContent) {
                 cellButton.classList.add("hover-active");
@@ -87,30 +88,31 @@ const GameScreen = (function() {
         });
     }
 
-    // Handler checking which cell was clicked
+    // Handler for clicking on the board and adding marks
     const clickBoard = (e) => {
         const cell = e.target;
         const id = cell.id;
-        const cellValue = game.getBoard()[id].getValue();
 
-        // Make sure a cell was clicked and it is empty, then play round
-        if (!id || cellValue) {
+        // Make sure a cell was clicked
+        if (!id) {
             return
         }
+
+        // Play round with clicked cell id
         game.playRound(id);
 
-        // Remove mouseover event on clicked cell
+        // Remove mouseover andevent on clicked cell
         cell.removeEventListener("mouseover", mouseoverCell);
         cell.removeEventListener("mouseout", mouseoutCell);
 
-        // Check if there is a winner
-        if (game.checkWinner()){
-            WinnerScreen.init(game);
-        } else { 
-            update();
-        }
+        // Check if game is over, else repeat a round
+        if (game.isBoardFull() || game.getWinningRow()){
+            EndScreen.init(game);
+        } 
+        else { update(); }
     };
     
+    // Handler for previewing mark about to be placed
     const mouseoverCell = (e) => {
         const cell = e.target;
         const id = cell.id;
@@ -122,6 +124,7 @@ const GameScreen = (function() {
         }
     }
 
+    // Handler for removing mark preview
     const mouseoutCell = (e) => {
         const cell = e.target;
         const id = cell.id;
@@ -135,43 +138,75 @@ const GameScreen = (function() {
     return { init };
 })();
 
-const WinnerScreen = (function() {
+const EndScreen = (function() {
 
-    const init = (game) => {
-        const winner = game.getActivePlayer().name;
-        const board = game.getBoard();
-        const winningCells = game.getWinningCells();
-
+    const displayDraw = () => {
         // Get elements
         const message = document.querySelector(".game-message");
+
+        // Clear the area
+        gameContainer.innerHTML = "";
+
+        // Display draw message
+        gameContainer.appendChild(message);
+        message.innerHTML = `It's a <span>draw</span>!`
+    };
+
+    const displayWinner = (winner, game) => {
+        const board = game.getBoard();
+        const winningRow = game.getWinningRow();
+
+        // Get elements
         const boardGrid = document.querySelector(".game-board");
+        const message = document.querySelector(".game-message");
 
-        // Display win message
-        message.innerHTML = `<span>${winner}</span>'s the winner!`;
-
-        // Clear the grid
+        // Clear the area
+        gameContainer.innerHTML = "";
         boardGrid.innerHTML = "";
+
+        // Create elements
+        gameContainer.appendChild(message);
+        gameContainer.appendChild(boardGrid);
+
+        // Display winner message
+        message.innerHTML = `<span>${winner}</span>'s the winner!`;
 
         // Render winning board
         board.forEach((cell, index) => {
             const cellButton = document.createElement("button");
             cellButton.textContent = cell.getValue();
             cellButton.classList.add("cell");
-            if (winningCells.includes(index)){
+            if (winningRow.includes(index)){
                 cellButton.classList.add("winner");
             } else {
                 cellButton.classList.add("preview");
             }
             boardGrid.appendChild(cellButton);
         });
+    };
 
-        // Add Play Again button
+    const addPlayButton = (game) => {
         const playAgainBtn = document.createElement("button");
-        playAgainBtn.innerText = "PLAY AGAIN";
+        playAgainBtn.innerText = "PLAY AGAIN ?";
         playAgainBtn.classList.add("start-game-button", "play-again-button");
         playerNames = [game.getPlayers()[0].name, game.getPlayers()[1].name];
         playAgainBtn.addEventListener("click", () => GameScreen.init(playerNames));
         gameContainer.appendChild(playAgainBtn);
+    };
+
+    const init = (game) => {
+
+        // Get winner
+        const winner = game.getActivePlayer().name;
+
+        // Display winner or draw screen
+        if (game.isBoardFull()) {
+            displayDraw();
+        }
+        else { displayWinner(winner, game); }
+        
+        // Add play again button
+        addPlayButton(game);
     }
 
     return { init };

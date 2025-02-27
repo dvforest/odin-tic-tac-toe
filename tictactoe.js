@@ -1,4 +1,4 @@
-function GameBoard() {
+function GameBoard() {``
     let board = [];
     let cells = 9;
 
@@ -14,13 +14,15 @@ function GameBoard() {
         }   
     }
 
-    const printBoard = () => {
-        console.log(board[0].getValue(), board[1].getValue(), board[2].getValue());
-        console.log(board[3].getValue(), board[4].getValue(), board[5].getValue());
-        console.log(board[6].getValue(), board[7].getValue(), board[8].getValue());
+    const getValues = () => {
+        let values = [];
+        for(i = 0; i < cells; i++){
+            values.push(board[i].getValue());
+        }
+        return values;
     }
 
-    return { getBoard, addMark, printBoard };
+    return { getBoard, addMark, getValues}
 }
 
 function Cell() {
@@ -51,7 +53,6 @@ function TicTacToe(playerNames) {
     ];
 
     let activePlayer = players[0];
-    let winningCells = [];
 
     const getActivePlayer = () => activePlayer;
 
@@ -59,12 +60,7 @@ function TicTacToe(playerNames) {
         activePlayer = activePlayer === players[0] ? players[1] : players[0];
     }
 
-    const printNewRound = () => {
-        board.printBoard();
-        console.log(`Active player is ${getActivePlayer().name}`);
-    }
-
-    const checkWinner = () => {
+    const getWinningRow = () => {
         let winningRows = [
             [0, 1, 2], // Horizontal rows
             [3, 4, 5],
@@ -87,35 +83,30 @@ function TicTacToe(playerNames) {
 
             // Check that cells are not empty and have the same mark
             if (marks[a] && marks[a] === marks[b] && marks[b] === marks[c]) {
-                winningCells = row;
-                return true;
+                return row;
             }
         }
-        return false;
+        return null;
     }
 
-    const getWinningCells = () => winningCells;
+    const isBoardFull = () => {
+        const values = board.getValues();
+            return !values.includes("");
+    }
 
     const getPlayers = () => players;
 
     const playRound = (cell) => {
         board.addMark(cell, getActivePlayer().mark);
-        if (checkWinner()){
-            return;
-        }
         switchActivePlayer();
-        printNewRound();
     }
-
-    // Print initial empty board
-    printNewRound();
 
     return { 
         getActivePlayer,
         playRound,
         getBoard: board.getBoard,
-        checkWinner,
-        getWinningCells,
-        getPlayers
+        getWinningRow,
+        getPlayers,
+        isBoardFull
     };
 };

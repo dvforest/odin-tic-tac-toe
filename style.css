@@ -25,6 +25,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 10px;
 }
 
 .square-container {
@@ -126,7 +127,6 @@ body {
     padding: 5px;
     width: 325px;
     height: 40px;
-    margin: 5px 0;
 }
 
 .player-name::placeholder {
